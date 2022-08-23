@@ -1,0 +1,63 @@
+.App {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.form-container {
+  max-width: 500px;
+  border: 2px solid;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 2px 2px 2px darkgrey;
+  margin: auto;
+}
+
+.form-title {
+  font-size: 30px;
+  text-align: center;
+  font-weight: 600;
+  padding-bottom: 20px;
+}
+
+form.column-flex {
+  display: flex;
+  flex-direction: column;
+}
+
+form.column-flex>input {
+  height: 30px;
+  line-height: 30px;
+  margin: 5px;
+}
+
+form.column-flex>label {
+  font-weight: 600;
+  height: 15px;
+  line-height: 15px;
+  margin: 5px;
+}
+
+.form-container .form-section {
+  background-color: #e7e7e7;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+input[type='button'] {
+  cursor: pointer;
+  box-shadow: 0px 0px 1px;
+  transition: 0.3s ease-in-out;
+}
+
+input[type='button']:hover {
+  box-shadow: 0px 0px 4px;
+  transition: 0.3s ease-in-out;
+}
+
+.big-logo {
+  text-align: center;
+  height: 150px;
+  font-size: 40px;
+  font-family: system-ui;
+  font-weight: 600;
+  padding-top: 50px;
+}
