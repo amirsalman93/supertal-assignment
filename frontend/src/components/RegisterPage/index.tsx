@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ToastService } from '../../services/ToastService';
 import BigLogo from '../common/BigLogo';
-import FormContainer from '../common/FormContainer';
+import ButtonField from '../common/form/Field/ButtonField';
+import InputField from '../common/form/Field/InputField';
+import FormContainer from '../common/form/FormContainer';
 
 const RegisterPage = () => {
     const formId_and_class = 'register-form';
@@ -52,52 +54,54 @@ const RegisterPage = () => {
         <div className={formId_and_class}>
             <BigLogo />
             <FormContainer title='Register New Account'>
-                <label htmlFor='username'> Username </label>
-                <input
-                    type={'text'}
-                    name='username'
-                    id={`${formId_and_class}-username`}
-                    ref={usernameRef}
+                <InputField
+                    formId={formId_and_class}
+                    fieldId={'username'}
+                    label={'Username'}
                     value={username}
-                    onChange={e => setUsername(e.target.value)}
+                    setValue={setUsername}
+                    fieldRef={usernameRef}
+                    onEnter={registerButtonCallback}
                 />
-                <label htmlFor='name'> Name </label>
-                <input
-                    type={'text'}
-                    name='name'
-                    id={`${formId_and_class}-name`}
-                    ref={nameRef}
+                <InputField
+                    formId={formId_and_class}
+                    fieldId={'name'}
+                    label={'Name'}
                     value={name}
-                    onChange={e => setUsername(e.target.value)}
+                    setValue={setName}
+                    fieldRef={nameRef}
+                    onEnter={registerButtonCallback}
                 />
-                <label htmlFor='password'> Password </label>
-                <input
-                    type={'text'}
-                    name='password'
-                    id={`${formId_and_class}-password`}
+                <InputField
+                    formId={formId_and_class}
+                    fieldId={'password'}
+                    label={'Password'}
                     value={password}
-                    ref={passwordRef}
-                    onChange={e => setPassword(e.target.value)}
+                    setValue={setPassword}
+                    fieldRef={passwordRef}
+                    type={'password'}
+                    onEnter={registerButtonCallback}
                 />
-                <label htmlFor='repassword'> Confirm Password </label>
-                <input
-                    type={'text'}
-                    name='repassword'
-                    id={`${formId_and_class}-repassword`}
+                <InputField
+                    formId={formId_and_class}
+                    fieldId={'repassword'}
+                    label={'Confirm Password'}
                     value={repassword}
-                    ref={repasswordRef}
-                    onChange={e => setRepassword(e.target.value)}
+                    setValue={setRepassword}
+                    fieldRef={repasswordRef}
+                    type={'password'}
+                    onEnter={registerButtonCallback}
                 />
-                <input
-                    type={'button'}
-                    id={`${formId_and_class}-register-button`}
-                    value={'Register'}
+                <ButtonField
+                    formId={formId_and_class}
+                    fieldId={'register-button'}
+                    label={'Register'}
                     onClick={registerButtonCallback}
                 />
-                <input
-                    type={'button'}
-                    id={`${formId_and_class}-login-button`}
-                    value={'Already have an Account? Login'}
+                <ButtonField
+                    formId={formId_and_class}
+                    fieldId={'login-button'}
+                    label={'Already have an Account? Login'}
                 />
             </FormContainer>
 

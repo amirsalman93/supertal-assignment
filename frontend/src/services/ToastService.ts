@@ -1,4 +1,4 @@
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 export namespace ToastService {
     export function Info(message: string) {

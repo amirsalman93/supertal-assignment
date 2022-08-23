@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ToastService } from '../../services/ToastService';
 import BigLogo from '../common/BigLogo';
-import FormContainer from '../common/FormContainer';
+import ButtonField from '../common/form/Field/ButtonField';
+import InputField from '../common/form/Field/InputField';
+import FormContainer from '../common/form/FormContainer';
 
 const LoginPage = () => {
     const formId_and_class = 'login-page';
@@ -44,35 +46,35 @@ const LoginPage = () => {
         <div className={formId_and_class}>
             <BigLogo />
             <FormContainer title='User Login'>
-                <label htmlFor='username'> Username </label>
-                <input
-                    type={'text'}
-                    name='username'
-                    id={`${formId_and_class}-username`}
-                    ref={usernameRef}
+                <InputField
+                    formId={formId_and_class}
+                    fieldId={'username'}
+                    label={'Username'}
                     value={username}
-                    onChange={e => setUsername(e.target.value)}
+                    setValue={setUsername}
+                    fieldRef={usernameRef}
+                    onEnter={loginButtonCallback}
                 />
-                <label htmlFor='password'> Password </label>
-                <input
-                    type={'text'}
-                    name='password'
-                    id={`${formId_and_class}-password`}
+                <InputField
+                    formId={formId_and_class}
+                    fieldId={'password'}
+                    label={'Password'}
                     value={password}
-                    ref={passwordRef}
-                    onChange={e => setPassword(e.target.value)}
+                    setValue={setPassword}
+                    type={'password'}
+                    fieldRef={passwordRef}
+                    onEnter={loginButtonCallback}
                 />
-                <input
-                    type={'button'}
-                    id={`${formId_and_class}-login-button`}
-                    value={'Login'}
+                <ButtonField
+                    formId={formId_and_class}
+                    fieldId={'login-button'}
+                    label={'Login'}
                     onClick={loginButtonCallback}
                 />
-                <input
-                    type={'button'}
-                    id={`${formId_and_class}-register-button`}
-                    value={'New to Supertal? Register New Account'}
-                    onClick={openRegisterForm}
+                <ButtonField
+                    formId={formId_and_class}
+                    fieldId={'register-button'}
+                    label={'New to Supertal? Register New Account'}
                 />
             </FormContainer>
         </div>

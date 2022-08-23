@@ -9,7 +9,7 @@ const FormContainer = (props: {
         <div className='form-container'>
             <div className='form-title'>{props.title}</div>
             <section className='form-section'>
-                <form className='column-flex'>
+                <form className='column-flex' autoComplete='off'>
                     {props.children}
                 </form>
             </section>
