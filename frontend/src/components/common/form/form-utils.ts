@@ -21,7 +21,7 @@ export namespace FormValidators {
         otherValue: string
     ): boolean => {
         if (value !== otherValue) {
-            ToastService.ThrowMissingFormFieldError(label);
+            ToastService.ThrowMismatchFormFieldError(label);
             fieldRef.current?.focus();
             return false;
         }

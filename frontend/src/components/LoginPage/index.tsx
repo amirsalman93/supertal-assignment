@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { RestApiService } from '../../services/RestApiService';
 import { ToastService } from '../../services/ToastService';
+import { IAccessToken, IUserCredentials } from '../../types/users';
 import BigLogo from '../common/BigLogo';
 import ButtonField from '../common/form/Field/ButtonField';
 import InputField from '../common/form/Field/InputField';
@@ -21,8 +23,17 @@ const LoginPage = () => {
 
     const loginButtonCallback = () => {
         if (validateForm()) {
-            ToastService.Success('Valid');
-            // todo: server call
+            let loginUser: IUserCredentials = {
+                username: username,
+                password: password
+            }
+            // ToastService.Success('Valid');
+            RestApiService.callApi('post', 'users/login', loginUser, (tokenResponse: IAccessToken) => {
+                ToastService.Success(`Welocme token '${tokenResponse.access_token}'.`)
+
+                // todo: redirect to home page
+                setTimeout(() => ToastService.Success('Redirecting...'), 1000);
+            })
         }
     }
     const validateForm = (): boolean => {

@@ -1,5 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { RestApiService } from '../../services/RestApiService';
 import { ToastService } from '../../services/ToastService';
+import { ICreateUser, IUser } from '../../types/users';
 import BigLogo from '../common/BigLogo';
 import ButtonField from '../common/form/Field/ButtonField';
 import InputField from '../common/form/Field/InputField';
@@ -26,13 +28,25 @@ const RegisterPage = () => {
 
     const registerButtonCallback = () => {
         if (validateForm()) {
-            ToastService.Success('Valid');
+            let createUser: ICreateUser = {
+                name: name,
+                username: username,
+                password: password
+            }
+            // ToastService.Success('Valid');
+            RestApiService.callApi('post', 'users', createUser, (user: IUser) => {
+                ToastService.Success(`User created successfully with username: '${user.username}'.`)
+
+                // todo: redirect to login page
+                setTimeout(() => ToastService.Success('Redirecting...'), 1000);
+            })
         }
     }
     const validateForm = (): boolean => {
         let valid = true;
 
         valid = valid && FormValidators.validateInputReqField(usernameRef, 'Username', username);
+        valid = valid && FormValidators.validateInputReqField(nameRef, 'Name', name);
         valid = valid && FormValidators.validateInputReqField(passwordRef, 'Password', password);
         valid = valid && FormValidators.validateInputReqField(repasswordRef, 'Confirm Password', repassword);
         valid = valid && FormValidators.validateInputMismatchField(repasswordRef, 'Password', password, repassword);

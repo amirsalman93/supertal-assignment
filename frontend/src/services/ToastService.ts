@@ -12,7 +12,7 @@ export namespace ToastService {
         });
     }
     export function ServerError(error: { statusCode: number; message: string }) {
-        toast.error(error.statusCode + "\n" + error.message, {
+        toast.error(error.statusCode + ": " + error.message, {
             position: toast.POSITION.TOP_RIGHT,
         });
     }

@@ -9,8 +9,8 @@ function App() {
   return (
     <div className="App">
       <ToastContainer pauseOnFocusLoss={false} limit={8}/>
-      {/* <LoginPage /> */}
-      <RegisterPage />
+      <LoginPage />
+      {/* <RegisterPage /> */}
     </div>
   );
 }
