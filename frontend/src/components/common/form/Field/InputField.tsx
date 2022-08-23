@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-interface IProps {
+export interface IInputFieldProps {
     formId: string;
     fieldId: string;
     label: string;
@@ -10,7 +10,7 @@ interface IProps {
     fieldRef?: React.RefObject<HTMLInputElement>;
     onEnter?: { (e?: React.KeyboardEvent<HTMLInputElement>): void }
 }
-const InputField = (props: IProps) => {
+const InputField = (props: IInputFieldProps) => {
     const { formId, fieldId, type, label, fieldRef, value, setValue, onEnter } = props;
     return (
         <Fragment>

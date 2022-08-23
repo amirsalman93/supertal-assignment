@@ -3,10 +3,12 @@ import { ToastService } from '../../services/ToastService';
 import BigLogo from '../common/BigLogo';
 import ButtonField from '../common/form/Field/ButtonField';
 import InputField from '../common/form/Field/InputField';
+import { FormValidators } from '../common/form/form-utils';
 import FormContainer from '../common/form/FormContainer';
 
+const formId_and_class = 'register-form';
+
 const RegisterPage = () => {
-    const formId_and_class = 'register-form';
 
     const usernameRef = useRef<HTMLInputElement>(null);
     const nameRef = useRef<HTMLInputElement>(null);
@@ -29,24 +31,12 @@ const RegisterPage = () => {
     }
     const validateForm = (): boolean => {
         let valid = true;
-        if (!username) {
-            ToastService.ThrowMissingFormFieldError('Username');
-            usernameRef.current?.focus();
-            valid = false;
-        }
-        else if (!password) {
-            ToastService.ThrowMissingFormFieldError('Password');
-            passwordRef.current?.focus();
-            valid = false;
-        } else if (!repassword) {
-            ToastService.ThrowMissingFormFieldError('Confirm Password');
-            repasswordRef.current?.focus();
-            valid = false;
-        } else if (password !== repassword) {
-            ToastService.ThrowMismatchFormFieldError('Password');
-            repasswordRef.current?.focus();
-            valid = false;
-        }
+
+        valid = valid && FormValidators.validateInputReqField(usernameRef, 'Username', username);
+        valid = valid && FormValidators.validateInputReqField(passwordRef, 'Password', password);
+        valid = valid && FormValidators.validateInputReqField(repasswordRef, 'Confirm Password', repassword);
+        valid = valid && FormValidators.validateInputMismatchField(repasswordRef, 'Password', password, repassword);
+
         return valid;
     }
 

@@ -1,13 +1,13 @@
 import React from 'react';
 
-interface IProps {
+export interface IButtonFieldProps {
     formId: string;
     fieldId: string;
     label: string;
     onClick?: React.MouseEventHandler<HTMLInputElement>
 }
 
-const ButtonField = (props: IProps) => {
+const ButtonField = (props: IButtonFieldProps) => {
     const { formId, fieldId, label, onClick } = props;
     return (
         <input

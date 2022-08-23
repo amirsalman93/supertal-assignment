@@ -3,10 +3,12 @@ import { ToastService } from '../../services/ToastService';
 import BigLogo from '../common/BigLogo';
 import ButtonField from '../common/form/Field/ButtonField';
 import InputField from '../common/form/Field/InputField';
+import { FormValidators } from '../common/form/form-utils';
 import FormContainer from '../common/form/FormContainer';
 
+const formId_and_class = 'login-page';
+
 const LoginPage = () => {
-    const formId_and_class = 'login-page';
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -25,16 +27,10 @@ const LoginPage = () => {
     }
     const validateForm = (): boolean => {
         let valid = true;
-        if (!username) {
-            ToastService.ThrowMissingFormFieldError('Username');
-            usernameRef.current?.focus();
-            valid = false;
-        }
-        else if (!password) {
-            ToastService.ThrowMissingFormFieldError('Password');
-            passwordRef.current?.focus();
-            valid = false;
-        }
+
+        valid = valid && FormValidators.validateInputReqField(usernameRef, 'Username', username);
+        valid = valid && FormValidators.validateInputReqField(passwordRef, 'Password', password);
+
         return valid;
     }
 
