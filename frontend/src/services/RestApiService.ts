@@ -50,19 +50,23 @@ export namespace RestApiService {
 
             case "get":
                 {
-
+                    axios.get(domainName + "api/" + endpoint, config)
+                        .then(status)
+                        .then(data)
+                        .then(callback)
+                        .catch(handleUnexpectedError)
                 }
                 break;
 
             case "put":
                 {
-
+                    // todo
                 }
                 break;
 
             case "delete":
                 {
-
+                    // todo
                 }
                 break;
 
@@ -76,11 +80,7 @@ export namespace RestApiService {
             return Promise.resolve(response);
         } else {
             if (response.status === 401) {
-                // Unauthorized
-                if (window.location.pathname !== "/login") {
-                    LocalStorageService.cleanLocalStorage();
-                    window.location.assign("/login");
-                }
+                forceLogout();
             } else {
             }
             return Promise.reject(response);
@@ -93,6 +93,15 @@ export namespace RestApiService {
     function handleUnexpectedError(error: any) {
         if (error && error.response && error.response.data) {
             ToastService.ServerError(error.response.data)
+            if (error.response.status === 401) forceLogout();
+        }
+    }
+
+    function forceLogout() {
+        LocalStorageService.cleanLocalStorage();
+        // Unauthorized
+        if (window.location.pathname !== "/login") {
+            window.location.assign("/login");
         }
     }
 

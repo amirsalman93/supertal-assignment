@@ -8,7 +8,7 @@ export namespace LocalStorageService {
             return user;
         },
         set info(value) {
-            localStorage.setItem("loggedInUser", value);
+            localStorage.setItem("loggedInUser", JSON.stringify(value));
         },
         get username() {
             let user: any = this.info;

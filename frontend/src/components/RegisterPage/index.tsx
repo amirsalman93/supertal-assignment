@@ -1,4 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../services/AuthProvider';
+import { LocalStorageService } from '../../services/LocalStorageService';
 import { RestApiService } from '../../services/RestApiService';
 import { ToastService } from '../../services/ToastService';
 import { ICreateUser, IUser } from '../../types/users';
@@ -11,6 +14,8 @@ import FormContainer from '../common/form/FormContainer';
 const formId_and_class = 'register-form';
 
 const RegisterPage = () => {
+    let auth = useAuth();
+    let navigate = useNavigate();
 
     const usernameRef = useRef<HTMLInputElement>(null);
     const nameRef = useRef<HTMLInputElement>(null);
@@ -24,6 +29,7 @@ const RegisterPage = () => {
 
     useEffect(() => {
         usernameRef.current?.focus();
+        auth?.alreadyLoggedIn();
     }, [])
 
     const registerButtonCallback = () => {
@@ -33,12 +39,8 @@ const RegisterPage = () => {
                 username: username,
                 password: password
             }
-            // ToastService.Success('Valid');
             RestApiService.callApi('post', 'users', createUser, (user: IUser) => {
                 ToastService.Success(`User created successfully with username: '${user.username}'.`)
-
-                // todo: redirect to login page
-                setTimeout(() => ToastService.Success('Redirecting...'), 1000);
             })
         }
     }
@@ -52,6 +54,9 @@ const RegisterPage = () => {
         valid = valid && FormValidators.validateInputMismatchField(repasswordRef, 'Password', password, repassword);
 
         return valid;
+    }
+    const openLoginForm = () => {
+        navigate('/login');
     }
 
     return (
@@ -106,6 +111,7 @@ const RegisterPage = () => {
                     formId={formId_and_class}
                     fieldId={'login-button'}
                     label={'Already have an Account? Login'}
+                    onClick={openLoginForm}
                 />
             </FormContainer>
 

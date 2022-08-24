@@ -18,4 +18,5 @@ export interface IUserCredentials {
 
 export interface IAccessToken {
     access_token: string;
+    user: IUser;
 }

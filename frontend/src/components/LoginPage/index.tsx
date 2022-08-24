@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../services/AuthProvider';
+import { LocalStorageService } from '../../services/LocalStorageService';
 import { RestApiService } from '../../services/RestApiService';
 import { ToastService } from '../../services/ToastService';
-import { IAccessToken, IUserCredentials } from '../../types/users';
+import { IAccessToken, IUser, IUserCredentials } from '../../types/users';
 import BigLogo from '../common/BigLogo';
 import ButtonField from '../common/form/Field/ButtonField';
 import InputField from '../common/form/Field/InputField';
@@ -11,6 +14,9 @@ import FormContainer from '../common/form/FormContainer';
 const formId_and_class = 'login-page';
 
 const LoginPage = () => {
+    const navigate = useNavigate();
+    let auth = useAuth();
+
     const usernameRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -19,6 +25,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         usernameRef.current?.focus();
+        auth?.alreadyLoggedIn();
     }, [])
 
     const loginButtonCallback = () => {
@@ -27,13 +34,8 @@ const LoginPage = () => {
                 username: username,
                 password: password
             }
-            // ToastService.Success('Valid');
-            RestApiService.callApi('post', 'users/login', loginUser, (tokenResponse: IAccessToken) => {
-                ToastService.Success(`Welocme token '${tokenResponse.access_token}'.`)
 
-                // todo: redirect to home page
-                setTimeout(() => ToastService.Success('Redirecting...'), 1000);
-            })
+            auth?.login(loginUser);
         }
     }
     const validateForm = (): boolean => {
@@ -46,7 +48,8 @@ const LoginPage = () => {
     }
 
     const openRegisterForm = () => {
-        // todo: open register user form
+        // open register user form
+        navigate('/register');
     }
 
     return (
@@ -82,6 +85,7 @@ const LoginPage = () => {
                     formId={formId_and_class}
                     fieldId={'register-button'}
                     label={'New to Supertal? Register New Account'}
+                    onClick={openRegisterForm}
                 />
             </FormContainer>
         </div>
