@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { createContext, useContext, useEffect, useState } from "react";
 import AboutPage from "../components/AboutPage";
+import ExplorePage from "../components/ExplorePage";
 import HomePage from "../components/HomePage";
 import LoginPage from "../components/LoginPage";
 import ManageMusicPage from "../components/ManageMusicPage";
@@ -13,15 +14,18 @@ interface IRoute {
     path: string;
     IsNavBarItem?: boolean;
     element?: React.ReactNode | null;
+    protected?: boolean;
+    adminOnly?: boolean;
 }
 
 export const AppRoutesList: IRoute[] = [
     { title: 'Login', path: '/login', element: <LoginPage /> },
     { title: 'Register', path: '/register', element: <RegisterPage /> },
-    { title: 'Home', path: '/home', element: <HomePage />, IsNavBarItem: true },
-    { title: 'Users', path: '/users', element: <UserListingPage />, IsNavBarItem: true },
-    { title: 'Manage Music', path: '/manage-music', element: <ManageMusicPage />, IsNavBarItem: true },
-    { title: 'About', path: '/about', element: <AboutPage />, IsNavBarItem: true },
+    { title: 'Home', path: '/home', element: <HomePage />, IsNavBarItem: true, protected: true },
+    { title: 'Explore', path: '/explore', element: <ExplorePage />, IsNavBarItem: true, protected: true },
+    { title: 'Users', path: '/users', element: <UserListingPage />, IsNavBarItem: true, protected: true, adminOnly: true },
+    { title: 'Manage Music', path: '/manage-music', element: <ManageMusicPage />, IsNavBarItem: true, protected: true, adminOnly: true },
+    { title: 'About', path: '/about', element: <AboutPage />, IsNavBarItem: true, protected: true },
     { title: 'Login', path: '*', element: <LoginPage /> },
 ]
 
@@ -39,11 +43,23 @@ export const RoutesProvider = ({ children }: { children: any }) => {
     let auth = useAuth();
     const [navBarItems, setNavBarItems] = useState<IRoute[]>([]);
     const [switchRoutes, setSwitchRoutes] = useState<IRoute[]>(AppRoutesList);
-    const [allPossibleRoutesStings, setAllPossibleRoutesStings] = useState<string[]>([]);
+    const [allPossibleRoutesStings] = useState<string[]>(_.uniq(AppRoutesList.map(route => route.path)));
 
     useEffect(() => {
-        setNavBarItems(AppRoutesList.filter(route => route.IsNavBarItem))
-        setAllPossibleRoutesStings(_.uniq(AppRoutesList.map(route => route.path)));
+        if (!auth?.user) {
+            // not logged in
+            let allowedRoutes = AppRoutesList.filter(route => !route.protected);
+            setSwitchRoutes(allowedRoutes);   // remove protected routes
+            setNavBarItems(allowedRoutes.filter(route => route.IsNavBarItem))       // populate nav bar routes
+        }
+        else if (auth.user.username === 'admin') {
+            setSwitchRoutes(AppRoutesList);   // allow all routes
+            setNavBarItems(AppRoutesList.filter(route => route.IsNavBarItem))       // populate nav bar routes
+        } else {
+            let allowedRoutes = AppRoutesList.filter(route => !route.adminOnly);
+            setSwitchRoutes(allowedRoutes);   // remove admin only routes
+            setNavBarItems(allowedRoutes.filter(route => route.IsNavBarItem))       // populate nav bar routes
+        }
     }, [auth?.user])
 
     return (<RoutesContext.Provider value={{ navBarItems, switchRoutes, allPossibleRoutesStings }}>
