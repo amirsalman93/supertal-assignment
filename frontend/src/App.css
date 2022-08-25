@@ -4,6 +4,7 @@ body {
 
 .App {
   font-family: Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
 
 .form-container {
@@ -12,7 +13,7 @@ body {
   border-radius: 10px;
   padding: 10px;
   box-shadow: 2px 2px 2px darkgrey;
-  margin: auto;
+  margin: 20px auto;
 }
 
 .form-title {
@@ -29,7 +30,6 @@ form.column-flex {
 
 form.column-flex>input {
   height: 30px;
-  line-height: 30px;
   margin: 5px;
 }
 

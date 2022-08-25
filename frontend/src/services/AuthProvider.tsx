@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllPossibleRoutes } from "../components/routesList";
 import { IAccessToken, IUser, IUserCredentials } from "../types/users";
 import { LocalStorageService } from "./LocalStorageService";
 import { RestApiService } from "./RestApiService";
+import { getAllPossibleRoutes } from "./RoutesProvider";
 import { ToastService } from "./ToastService";
 
 const AuthContext = createContext<{

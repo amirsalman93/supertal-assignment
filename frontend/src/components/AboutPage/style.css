@@ -1,0 +1,14 @@
+.about-page {
+    width: 100%;
+    text-align: center;
+}
+
+.about-page .instructions {
+    width: 400px;
+    text-align: left;
+    margin: 20px auto;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 20px;
+    box-shadow: 3px 3px 10px grey;
+}

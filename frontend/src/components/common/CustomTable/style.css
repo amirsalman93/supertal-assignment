@@ -1,0 +1,33 @@
+table.custom-table>thead>tr {
+    height: 50px
+}
+
+table.custom-table>thead>tr>th {
+    border: 3px solid black;
+    background: #badefe;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
+
+table.custom-table>tbody>tr>td {
+    padding: 10px;
+    border: 1px solid gray;
+    text-align: center;
+}
+
+table.custom-table>tbody>tr {
+    cursor: pointer;
+}
+
+table.custom-table>tbody>tr:nth-child(even) {
+    background: #e5e5e5
+}
+
+table.custom-table>tbody>tr:nth-child(odd) {
+    background: #FFF
+}
+
+table.custom-table>tbody>tr:hover {
+    background: #CCC
+}

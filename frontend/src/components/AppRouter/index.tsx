@@ -1,11 +1,12 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
-import { AppRoutesList } from '../routesList';
+import { useRoutes } from '../../services/RoutesProvider';
 
 const AppRouter = () => {
+    let routesContext = useRoutes();
     return (
         <Routes>
-            {AppRoutesList.map((route, i) => <Route {...route} key={i}></Route>)}
+            {routesContext?.switchRoutes.map((route, i) => <Route {...route} key={i}></Route>)}
         </Routes>
     );
 };

@@ -7,6 +7,10 @@ nav {
     color: white;
 }
 
+.navbar-logo {
+    cursor: pointer;    
+}
+
 .nav-container {
     width: 45%;
 }
@@ -16,12 +20,13 @@ nav {
     align-items: center;
     justify-content: space-around;
     list-style: none;
+    margin: 0px;
 }
 
 .logout-button,
 .nav-container li>a {
-    height: 25px;
-    line-height: 25px;
+    height: 40px;
+    line-height: 20px;
     padding: 10px 30px;
     border-radius: 10px;
     font-weight: 600;
