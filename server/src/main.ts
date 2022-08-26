@@ -39,9 +39,13 @@ bootstrap();
 /**
  * Admin Portal 
  * 
+ * - view all users
+ * 
  * Users (id, name, username, roles: [], Favorites(one to one))
  * Artist (id, name, dateOfBirth, profile picture, Track.id(one to many), genres)
  * Track (id, title, duration(s), Artist.id(one to one), genre, releaseYear)
  * Album (id, title, Tracks i.e. Track.id (one to many), genre, releaseYear)
  * Favorites (id, User.id, Track.id | Album.id)
  */
+
+

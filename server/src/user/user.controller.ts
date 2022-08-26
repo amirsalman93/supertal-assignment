@@ -6,7 +6,7 @@ import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { User } from './entities/user.entity';
-import { UsersService } from './users.service';
+import { UserService } from './user.service';
 
 export class AccessToken {
     access_token: string;
@@ -14,10 +14,10 @@ export class AccessToken {
 }
 
 @ApiTags('Users')
-@Controller('users')
-export class UsersController {
+@Controller('user')
+export class UserController {
     constructor(
-        private usersService: UsersService,
+        private userService: UserService,
         private authService: AuthService
     ) {
 
@@ -29,7 +29,7 @@ export class UsersController {
     @ApiOkResponse({ type: User, description: 'Logged in user info' })
     async whoAmI(@Request() req
     ): Promise<User> {
-        return await this.usersService.getUserById(req.user.id);
+        return await this.userService.getUserById(req.user.id);
     }
 
     @ApiBearerAuth()
@@ -38,7 +38,7 @@ export class UsersController {
     @ApiOkResponse({ type: User, description: 'user that matches the specified id' })
     @ApiNotFoundResponse()
     async getUser(@Param('id') id: string): Promise<User> {
-        let user = await this.usersService.getUserById(id);
+        let user = await this.userService.getUserById(id);
         if (!user) {
             throw new NotFoundException();
         }
@@ -51,7 +51,7 @@ export class UsersController {
     @ApiNotFoundResponse()
     @ApiOkResponse({ type: User, isArray: true, description: 'list of all users' })
     async getUsers(): Promise<User[]> {
-        let users = await this.usersService.getAllUsers();
+        let users = await this.userService.getAllUsers();
         if (!users) {
             throw new NotFoundException();
         }
@@ -61,7 +61,7 @@ export class UsersController {
     @Post()
     @ApiCreatedResponse({ type: User, description: 'newly created user' })
     createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
-        return this.usersService.addUser({ ...createUserDto });
+        return this.userService.addUser({ ...createUserDto });
     }
 
     @ApiBearerAuth()
@@ -73,7 +73,7 @@ export class UsersController {
         @Param('id') id: string,
         @Body() updateUserDto: CreateUserDto
     ) {
-        return await this.usersService.updateUserById(id, updateUserDto)
+        return await this.userService.updateUserById(id, updateUserDto)
     }
 
     @UseGuards(LocalAuthGuard)

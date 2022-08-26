@@ -1,9 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserCredentials } from 'src/users/entities/user-credentials.entity';
-import { User } from 'src/users/entities/user.entity';
-import { AccessToken } from 'src/users/users.controller';
-import { UsersService } from 'src/users/users.service';
+import { UserCredentials } from 'src/user/models/user-credentials.model';
+import { User } from 'src/user/entities/user.entity';
+import { AccessToken } from 'src/user/user.controller';
+import { UserService } from 'src/user/user.service';
 import { BcryptHasher } from './utils';
 
 export class JwtPayload {
@@ -13,10 +13,10 @@ export class JwtPayload {
 
 @Injectable()
 export class AuthService {
-    constructor(private usersService: UsersService, private jwtService: JwtService) { }
+    constructor(private userService: UserService, private jwtService: JwtService) { }
 
     async validateUser(userCredentals: UserCredentials): Promise<Partial<User>> {
-        const user = await this.usersService.findByUsername(userCredentals.username);
+        const user = await this.userService.findByUsername(userCredentals.username);
 
         if (user && userCredentals.password && BcryptHasher.comparePassword(userCredentals.password, user.password)) {
             // authenticated
