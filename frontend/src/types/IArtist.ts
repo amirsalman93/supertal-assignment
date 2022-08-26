@@ -7,5 +7,5 @@ export interface IArtist {
     id: string;
     name: string;
     genres?: string[];
-    activeSince: string;
+    activeSince: number;
 }

@@ -19,13 +19,14 @@ interface IProps {
 function CustomTable(props: IProps) {
     const { data, columns, onRowSingleClick } = props;
 
+    let validatedData = data;
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
         prepareRow,
-    } = useTable({ columns, data })
+    } = useTable({ columns, data: Array.isArray(data) ? data : [] })
 
     return (
         <table className='custom-table' {...getTableProps()} style={{ width: '100%' }}>
