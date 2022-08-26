@@ -1,7 +1,7 @@
-import { ConflictException, Inject, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
+import { ConflictException, Inject, Injectable, Logger, LoggerService } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { BcryptHasher, generateRandomId } from 'src/auth/utils';
-import { Repository } from 'typeorm';
+import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
@@ -27,28 +27,55 @@ const seedUsers: CreateUserDto[] = [
 
 @Injectable()
 export class UserService {
-    private users: User[] = seedUsers.map(u => ({ id: generateRandomId(), ...u }));
-
+    private readonly logger = new Logger(UserService.name);
     constructor(
-        // @Inject('USER_REPOSITORY')
-        // private userRepository: Repository<User>,
+        private prisma: PrismaService,
     ) {
-        // this.userRepository.save(seedUsers);
+        this.seed();
+    }
+
+    async seed() {
+        for (let i = 0; i < seedUsers.length; i++) {
+            try {
+                let u = seedUsers[i];
+                if (!await this.findByUsername(u.username)) {
+                    await this.prisma.user.create({ data: u as any });
+                }
+            } catch (error) {
+                this.logger.error(error.code, error.message);
+            }
+        }
     }
 
     async findByUsername(username: string): Promise<User> {
-        return this.users.find(user => user.username === username);
-        // return await this.userRepository.findOneBy({ username: username });
+        let user: User | undefined = undefined;
+        try {
+            user = await this.prisma.user.findUnique({ where: { username } });
+        } catch (error) {
+            this.logger.error(error.code, error.message);
+        }
+        return user;
     }
 
     async getUserById(id: string): Promise<User> {
-        return this.users.find(user => user.id === id);
-        // return this.userRepository.findOneBy({ id: id });
+        let user: User | undefined = undefined;
+        try {
+            await this.prisma.user.findUnique({ where: { id } });
+        } catch (error) {
+            this.logger.error(error.code, error.message);
+        }
+        return user;
     }
 
     async getAllUsers() {
-        return this.users;
-        // return await this.userRepository.find();
+        let users: User[] | undefined = undefined;
+        try {
+            users = await this.prisma.user.findMany({});
+        } catch (error) {
+            this.logger.error(error.code, error.message);
+        }
+
+        return users;
     }
 
     async addUser(createUserDto: CreateUserDto): Promise<User> {
@@ -65,8 +92,13 @@ export class UserService {
             id: generateRandomId(),
             ...createUserDto
         };
-        this.users.push(newUser);
-        // this.userRepository.save(newUser);
+
+        try {
+            newUser = await this.prisma.user.create({ data: newUser as any })
+        } catch (error) {
+            this.logger.error(error.code, error.message);
+        }
+
         return newUser;
     }
 

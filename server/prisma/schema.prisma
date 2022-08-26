@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(uuid())
+  name         String
+  username     String        @unique
+  password     String
+  interactions Interaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Interaction {
+  id        String   @id @default(uuid())
+  trackId   String?
+  userId    String?
+  isLiked   Boolean  @default(false)
+  playCount Int
+  track     Track?    @relation(fields: [trackId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Track {
+  id           String        @id @default(uuid())
+  name         String
+  albumId      String?
+  artistId     String
+  length       Float
+  track        Int?
+  lyrics       String?
+  fileUrl      String
+  album        Album?        @relation(fields: [albumId], references: [id])
+  artist       Artist        @relation(fields: [artistId], references: [id])
+  interactions Interaction[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Artist {
+  id        String   @id @default(uuid())
+  name      String
+  tracks    Track[]
+  albums    Album[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Album {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  cover     String
+  tracks    Track[]
+  artists   Artist[]
+}

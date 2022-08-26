@@ -41,6 +41,12 @@ bootstrap();
  * 
  * - view all users
  * 
+ * - Register new User
+ * - Login with existing User
+ * - Add/Remove Track to/from favorites
+ * - View all Users
+ * - Add\Remove Song, (select existing artist), (select existing album)
+ * - 
  * Users (id, name, username, roles: [], Favorites(one to one))
  * Artist (id, name, dateOfBirth, profile picture, Track.id(one to many), genres)
  * Track (id, title, duration(s), Artist.id(one to one), genre, releaseYear)
