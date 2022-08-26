@@ -45,6 +45,7 @@ export const RoutesProvider = ({ children }: { children: any }) => {
     const [switchRoutes, setSwitchRoutes] = useState<IRoute[]>(AppRoutesList);
     const [allPossibleRoutesStings] = useState<string[]>(_.uniq(AppRoutesList.map(route => route.path)));
 
+    // call whenever auth.user updates
     useEffect(() => {
         if (!auth?.user) {
             // not logged in

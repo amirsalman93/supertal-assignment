@@ -1,0 +1,13 @@
+.sub-nav-bar>.nav.nav-tabs>.nav-item>a.nav-link {
+    color: black;
+    cursor: pointer;
+}
+
+.sub-nav-bar>.nav.nav-tabs>.nav-item>a.nav-link.active,
+.sub-nav-bar>.nav.nav-tabs>.nav-item>a.nav-link.active:hover {
+    background-color: #a3a4a6;
+}
+
+.sub-nav-bar>.nav.nav-tabs>.nav-item>a.nav-link:hover {
+    background-color: #e2e2e2;
+}

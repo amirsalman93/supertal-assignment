@@ -25,7 +25,6 @@ const LoginPage = () => {
 
     useEffect(() => {
         usernameRef.current?.focus();
-        auth?.alreadyLoggedIn();
     }, [])
 
     const loginButtonCallback = () => {

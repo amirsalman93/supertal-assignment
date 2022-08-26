@@ -1,5 +1,5 @@
 import React from 'react'
-import { Column, useTable, } from 'react-table'
+import { useTable } from 'react-table'
 import './style.css'
 
 interface ITableColumn {

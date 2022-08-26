@@ -29,7 +29,6 @@ const RegisterPage = () => {
 
     useEffect(() => {
         usernameRef.current?.focus();
-        auth?.alreadyLoggedIn();
     }, [])
 
     const registerButtonCallback = () => {
@@ -39,7 +38,7 @@ const RegisterPage = () => {
                 username: username,
                 password: password
             }
-            RestApiService.callApi('post', 'users', createUser, (user: IUser) => {
+            RestApiService.callApi('post', 'user', createUser, (user: IUser) => {
                 ToastService.Success(`User created successfully with username: '${user.username}'.`)
             })
         }
