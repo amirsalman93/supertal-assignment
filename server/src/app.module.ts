@@ -15,7 +15,7 @@ import { ArtistModule } from './artist/artist.module';
     UserModule, TracksModule, FavoritesModule, AlbumsModule, AuthModule,
     // todo: Serve static frontend files only for production
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', '..', 'frontend', 'build'),
+      rootPath: join(__dirname, '..', 'build'),
       // renderPath: '/'
     }),
     ArtistModule

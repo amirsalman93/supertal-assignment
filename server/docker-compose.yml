@@ -1,0 +1,28 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres
+    container_name: postgresprisma
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgresdir:/var/lib/postgresql/data
+  server:
+    build: .
+    container_name: server
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      NODE_ENV: ${NODE_ENV}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresprisma:5432/${POSTGRES_DATABASE}?schema=public
+    ports:
+      - "${PORT}:${PORT}"
+    restart: unless-stopped
+    depends_on:
+      - postgres
+  volumes:
+    postgresdir:
+      name: postgres-db-volume
