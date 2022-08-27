@@ -1,11 +1,13 @@
 import { Body, Controller, Get, NotFoundException, Param, Post, Put, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { User } from '@prisma/client';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { User } from './entities/user.entity';
+import { UserEntity } from './entities/user.entity';
+
 import { UserService } from './user.service';
 
 export class AccessToken {
@@ -26,7 +28,7 @@ export class UserController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Get('whoami')
-    @ApiOkResponse({ type: User, description: 'Logged in user info' })
+    @ApiOkResponse({ type: UserEntity, description: 'Logged in user info' })
     async whoAmI(@Request() req
     ): Promise<User> {
         return await this.userService.getUserById(req.user.id);
@@ -35,7 +37,7 @@ export class UserController {
     @ApiBearerAuth()
     @UseGuards(JwtAuthGuard)
     @Get(':id')
-    @ApiOkResponse({ type: User, description: 'user that matches the specified id' })
+    @ApiOkResponse({ type: UserEntity, description: 'user that matches the specified id' })
     @ApiNotFoundResponse()
     async getUser(@Param('id') id: string): Promise<User> {
         let user = await this.userService.getUserById(id);
@@ -49,7 +51,7 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @Get()
     @ApiNotFoundResponse()
-    @ApiOkResponse({ type: User, isArray: true, description: 'list of all users' })
+    @ApiOkResponse({ type: UserEntity, isArray: true, description: 'list of all users' })
     async getUsers(): Promise<User[]> {
         let users = await this.userService.getAllUsers();
         if (!users) {
@@ -59,7 +61,7 @@ export class UserController {
     }
 
     @Post()
-    @ApiCreatedResponse({ type: User, description: 'newly created user' })
+    @ApiCreatedResponse({ type: UserEntity, description: 'newly created user' })
     createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
         return this.userService.addUser({ ...createUserDto });
     }
@@ -68,7 +70,7 @@ export class UserController {
     @UseGuards(JwtAuthGuard)
     @Put(':id')
     @ApiNotFoundResponse()
-    @ApiOkResponse({ type: User, description: 'updated the user with the specified id' })
+    @ApiOkResponse({ type: UserEntity, description: 'updated the user with the specified id' })
     async updateUser(
         @Param('id') id: string,
         @Body() updateUserDto: CreateUserDto

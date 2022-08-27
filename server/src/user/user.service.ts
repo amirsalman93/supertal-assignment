@@ -1,9 +1,8 @@
 import { ConflictException, Inject, Injectable, Logger, LoggerService } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { BcryptHasher, generateRandomId } from 'src/auth/utils';
 import { PrismaService } from 'src/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
 
 const seedUsers: CreateUserDto[] = [
     {
@@ -60,7 +59,7 @@ export class UserService {
     async getUserById(id: string): Promise<User> {
         let user: User | undefined = undefined;
         try {
-            await this.prisma.user.findUnique({ where: { id } });
+            user = await this.prisma.user.findUnique({ where: { id } });
         } catch (error) {
             this.logger.error(error.code, error.message);
         }
@@ -88,13 +87,10 @@ export class UserService {
         // hashing the pssword
         createUserDto.password = BcryptHasher.hashPassword(createUserDto.password);
 
-        let newUser: User = {
-            id: generateRandomId(),
-            ...createUserDto
-        };
+        let newUser: User = undefined;
 
         try {
-            newUser = await this.prisma.user.create({ data: newUser as any })
+            newUser = await this.prisma.user.create({ data: newUser })
         } catch (error) {
             this.logger.error(error.code, error.message);
         }
