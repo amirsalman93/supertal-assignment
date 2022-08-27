@@ -1,8 +1,9 @@
 import axios from "axios";
+import _ from "lodash";
 import { LocalStorageService } from "./LocalStorageService";
 import { ToastService } from "./ToastService";
 
-export type RestApiAction = 'post' | 'get' | 'put' | 'delete';
+export type RestApiAction = 'post' | 'get' | 'getById' | 'put' | 'patch' | 'delete';
 export namespace RestApiService {
 
     export function getServerEndpoint() {
@@ -18,7 +19,7 @@ export namespace RestApiService {
         return window.location.host;
     }
 
-    export function callApi(action: RestApiAction, endpoint: string, payload: object, callback: any) {
+    export function callApi(action: RestApiAction, endpoint: string, payload: any | string, callback: any) {
         let authenticated: boolean = true;
         let config: any = {};
         let userToken = LocalStorageService.token.userToken;
@@ -58,9 +59,24 @@ export namespace RestApiService {
                 }
                 break;
 
-            case "put":
+            case "getById":
                 {
-                    // todo
+                    axios.get(domainName + "api/" + endpoint + `/${payload}`, config)
+                        .then(status)
+                        .then(data)
+                        .then(callback)
+                        .catch(handleUnexpectedError)
+                }
+                break;
+
+            case "put":
+            case "patch":
+                {
+                    axios.patch(domainName + "api/" + endpoint + `/${payload.id}`, _.omit(payload, 'id'), config)
+                        .then(status)
+                        .then(data)
+                        .then(callback)
+                        .catch(handleUnexpectedError)
                 }
                 break;
 

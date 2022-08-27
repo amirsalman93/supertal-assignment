@@ -1,9 +1,10 @@
 import React from 'react';
+import ArtistsPage from '../ExplorePage/ArtistsPage';
 
 const ManageMusicPage = () => {
     return (
         <div>
-            Manage Music Page
+            <ArtistsPage edit={true}/>
         </div>
     );
 };

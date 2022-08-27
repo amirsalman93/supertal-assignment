@@ -4,23 +4,23 @@ import ArtistsPage from './ArtistsPage';
 import './style.css'
 
 const ExplorePage = () => {
-    const tabs = useMemo<ITabProperties[]>(() => ([
-            {
-                title: 'Artists',
-                component: <ArtistsPage />
-            },
-            {
-                title: 'Albums',
-                component: <div>Albums</div>
-            },
-            {
-                title: 'Tracks',
-                component: <div>Tracks</div>
-            }
-        ]), [])
+    // const tabs = useMemo<ITabProperties[]>(() => ([
+    //         {
+    //             title: 'Artists',
+    //             component: 
+    //         },
+    //         {
+    //             title: 'Albums',
+    //             component: <div>Albums</div>
+    //         },
+    //         {
+    //             title: 'Tracks',
+    //             component: <div>Tracks</div>
+    //         }
+    //     ]), [])
     return (
         <div className='explore-page'>
-            <SubNavBar tabs={tabs} />
+            <ArtistsPage />
         </div>
     );
 };

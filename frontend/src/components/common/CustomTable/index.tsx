@@ -5,7 +5,9 @@ import './style.css'
 interface ITableColumn {
     Header: string;
     accessor: string;
+    formatter?: (data: any) => any;
 }
+
 export interface ITableColumns extends Array<ITableColumn> { }
 export interface ITableRecord { [s: string]: any }
 export interface ITableData extends Array<ITableRecord> { }
@@ -52,11 +54,13 @@ function CustomTable(props: IProps) {
                             onRowSingleClick && onRowSingleClick(row.original);
                         }}>
                             {row.cells.map(cell => {
+                                const column = cell.column as any;
+                                const fomatter = column.formatter;
                                 return (
                                     <td
                                         {...cell.getCellProps()}
                                     >
-                                        {cell.render('Cell')}
+                                        {fomatter ? fomatter(cell.value) : cell.render('Cell')}
                                     </td>
                                 )
                             })}

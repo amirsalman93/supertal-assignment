@@ -1,11 +1,11 @@
-export interface IArtistWithCounts extends IArtist {
-    albumCount?: number;
-    trackCount?: number;
-}
+import { IAlbum } from "./IAlbum";
+import { ITrack } from "./ITrack";
 
 export interface IArtist {
     id: string;
     name: string;
-    genres?: string[];
-    activeSince: number;
+    tracks?: ITrack[];
+    albums?: IAlbum[];
+    createdAt: Date
+    updatedAt: Date
 }

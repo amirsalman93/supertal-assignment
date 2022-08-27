@@ -16,13 +16,14 @@ interface IRoute {
     element?: React.ReactNode | null;
     protected?: boolean;
     adminOnly?: boolean;
+    nonAdminOnly?: boolean;
 }
 
 export const AppRoutesList: IRoute[] = [
     { title: 'Login', path: '/login', element: <LoginPage /> },
     { title: 'Register', path: '/register', element: <RegisterPage /> },
     { title: 'Home', path: '/home', element: <HomePage />, IsNavBarItem: true, protected: true },
-    { title: 'Explore', path: '/explore', element: <ExplorePage />, IsNavBarItem: true, protected: true },
+    { title: 'Explore', path: '/explore', element: <ExplorePage />, IsNavBarItem: true, protected: true, nonAdminOnly: true },
     { title: 'Users', path: '/users', element: <UserListingPage />, IsNavBarItem: true, protected: true, adminOnly: true },
     { title: 'Manage Music', path: '/manage-music', element: <ManageMusicPage />, IsNavBarItem: true, protected: true, adminOnly: true },
     { title: 'About', path: '/about', element: <AboutPage />, IsNavBarItem: true, protected: true },
@@ -54,8 +55,9 @@ export const RoutesProvider = ({ children }: { children: any }) => {
             setNavBarItems(allowedRoutes.filter(route => route.IsNavBarItem))       // populate nav bar routes
         }
         else if (auth.user.username === 'admin') {
-            setSwitchRoutes(AppRoutesList);   // allow all routes
-            setNavBarItems(AppRoutesList.filter(route => route.IsNavBarItem))       // populate nav bar routes
+            let allowedRoutes = AppRoutesList.filter(route => !route.nonAdminOnly);
+            setSwitchRoutes(allowedRoutes);   // allow all routes
+            setNavBarItems(allowedRoutes.filter(route => route.IsNavBarItem))       // populate nav bar routes
         } else {
             let allowedRoutes = AppRoutesList.filter(route => !route.adminOnly);
             setSwitchRoutes(allowedRoutes);   // remove admin only routes
